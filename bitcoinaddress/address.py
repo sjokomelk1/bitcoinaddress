@@ -3,6 +3,7 @@
 #  This software is distributed under the terms of the MIT License.
 #  See the file 'LICENSE' in the root directory of the present distribution,
 #  or http://opensource.org/licenses/MIT.
+from asyncio.format_helpers import extract_stack
 import hashlib
 from abc import ABC
 import base58
@@ -70,7 +71,7 @@ class Address:
             self.pubaddr3 = self.instance._generate_publicaddress3(Address.TestNet.SEGWIT_PREFIX)
 
         def generate_publicaddress_tb1_P2WPKH(self):
-            self.pubaddrtb1_P2WPKH = self.instance._generate_publicaddress_bech32_P2WPKH(Address.TestNet.BECH32_PREFIX)
+            self.pubaddr1_P2WPKH = self.instance._generate_publicaddress_bech32_P2WPKH(Address.TestNet.BECH32_PREFIX)
 
         def generate_publicaddress_tb1_P2WSH(self):
             self.pubaddrtb1_P2WSH = self.instance._generate_publicaddress_bech32_P2WSH(Address.TestNet.BECH32_PREFIX)
@@ -88,7 +89,7 @@ class Address:
         address.generate()
         return address
 
-    def generate(self) -> {}:
+    def generate(self) -> {}: # type: ignore
         if self.key.digest is None:
             self.key.generate()
         self.mainnet.generate_publicaddress1()
@@ -129,34 +130,14 @@ class Address:
 
     def _generate_publicaddress_bech32_P2WSH(self, bech32_prefix):
         p = self._generate_compressed_pubkey()
-        redeem_script_P2WSH = hashlib.sha256(p).digest()
-        return str(segwit_addr.encode(bech32_prefix, Address.WITNESS_VERSION, redeem_script_P2WSH))
 
-    def _generate_uncompressed_pubkey(self, prefix):
-        digest = self.key.digest
-        ret = prefix + ecdsa_secp256k1(digest).to_string()  # 1 + 32 bytes + 32 bytes
-        self.pubkey = str(binascii.hexlify(ret).decode('utf-8'))
-        return ret
-
-    def _generate_compressed_pubkey(self):
-        ecdsa_digest = ecdsa_secp256k1(self.key.digest).to_string()
-        x_coord = ecdsa_digest[:int(len(ecdsa_digest) / 2)]
-        y_coord = ecdsa_digest[int(len(ecdsa_digest) / 2):]
-        if int(binascii.hexlify(y_coord), 16) % 2 == 0:
-            p = Address.PREFIX_EVEN + x_coord
-        else:
-            p = Address.PREFIX_ODD + x_coord
-        self.pubkeyc = str(binascii.hexlify(p).decode('utf-8'))
-        return p
-
-    def __str__(self, testnet=False):
-        if testnet:
+        if testnet: # type: ignore
             params = (self.pubkey,
                       self.pubkeyc,
                       self.testnet.pubaddr1,
                       self.testnet.pubaddr1c,
                       self.testnet.pubaddr3,
-                      self.testnet.pubaddrtb1_P2WPKH,
+                      self.testnet.pubaddr1_P2WPKH,
                       self.testnet.pubaddrtb1_P2WSH)
         else:
             params = (self.pubkey,

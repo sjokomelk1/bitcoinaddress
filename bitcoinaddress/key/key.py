@@ -53,7 +53,7 @@ class Key:
         self.testnet = Key.TestNet(self)
 
     @staticmethod
-    def of(obj):
+    def of(obj):  # sorcery skip: remove-redundant-if
         key = Key()
         if isinstance(obj, Seed):
             key._from_seed(obj)
@@ -65,8 +65,6 @@ class Key:
                 if len(obj) == 51:
                     key._from_wif(obj)
                     return key
-                if len(obj) == 52:
-                    pass  # TODO
             except:
                 raise Exception("Unsupported format.")
 
@@ -89,19 +87,7 @@ class Key:
         self.testnet.generate_wif()
         self.testnet.generate_wif_compressed()
 
-    def _from_wif(self, wif: str):
-        checksum_size = 4
-        self.digest = base58.b58decode(wif)[1:-checksum_size]
-        self._generate_hex()
-        self.mainnet.generate_wif()
-        self.mainnet.generate_wif_compressed()
-        self.testnet.generate_wif()
-        self.testnet.generate_wif_compressed()
 
-    def _generate_digest(self):
-        entropy = str(self.seed.entropy)
-        hash = hashlib.sha256(entropy.encode())
-        self.digest = hash.digest()
 
     def _generate_hex(self):
         self.hex = hexlify(self.digest).decode()

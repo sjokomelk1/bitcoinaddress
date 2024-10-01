@@ -6,3 +6,5 @@ test_env/
 *.egg-info
 *.iml
 *.pyc
+
+.fake

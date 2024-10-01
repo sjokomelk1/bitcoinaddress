@@ -1,0 +1,36 @@
+{
+    "python.autoComplete.extraPaths": [
+        "/Users/sol-maritakopseng/.vscode/extensions/stefanwehr.write-your-python-program-1.0.6/python/src/"
+    ],
+    "python.linting.enabled": false,
+    "cSpell.words": [
+        "Afcdzf",
+        "BCRPV",
+        "BECH",
+        "Cfdk",
+        "Fgqzie",
+        "FMUF",
+        "fpljyl",
+        "gtsqa",
+        "hexlify",
+        "Jysct",
+        "murcl",
+        "Muxuh",
+        "Nroj",
+        "ntzwlf",
+        "pubaddr",
+        "pubaddrbc",
+        "pubkey",
+        "pubkeyc",
+        "publicaddress",
+        "qsnwc",
+        "secp",
+        "segwit",
+        "umurcl",
+        "unhexlify",
+        "urandom",
+        "urcl",
+        "wifc",
+        "WPKH"
+    ]
+}
